@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>5.0</version>
+    <date>2020-10-21T16:28:18Z</date>
+    <groups>
+        <group>
+            <name>Templates</name>
+        </group>
+    </groups>
+    <templates>
+        <template>
+            <template>FlexLM Licence Usage</template>
+            <name>FlexLM Licence Usage</name>
+            <description>This depends on&#13;
+&#13;
+* a configuration file at /etc/zabbix/zabbix_agentd.conf.d/flexlm_licence_usage.conf&#13;
+&#13;
+* a script at /opt/zabbix/bin/flexlm_licence_usage&#13;
+&#13;
+on the monitored node.</description>
+            <groups>
+                <group>
+                    <name>Templates</name>
+                </group>
+            </groups>
+            <applications>
+                <application>
+                    <name>Licensing</name>
+                </application>
+            </applications>
+            <discovery_rules>
+                <discovery_rule>
+                    <name>FlexLM discovery</name>
+                    <key>flexlm.discovery</key>
+                    <delay>1h</delay>
+                    <item_prototypes>
+                        <item_prototype>
+                            <name>{#FEATURE} total</name>
+                            <key>flexlm.total[{#FEATURE}]</key>
+                            <delay>1d</delay>
+                            <history>1w</history>
+                            <applications>
+                                <application>
+                                    <name>Licensing</name>
+                                </application>
+                            </applications>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#FEATURE} used</name>
+                            <key>flexlm.used[{#FEATURE}]</key>
+                            <delay>3m</delay>
+                            <history>1w</history>
+                            <applications>
+                                <application>
+                                    <name>Licensing</name>
+                                </application>
+                            </applications>
+                        </item_prototype>
+                    </item_prototypes>
+                    <trigger_prototypes>
+                        <trigger_prototype>
+                            <expression>{FlexLM Licence Usage:flexlm.total[{#FEATURE}].last()} - &#13;
+{FlexLM Licence Usage:flexlm.used[{#FEATURE}].last()} = 0</expression>
+                            <name>{#FEATURE} licences exhausted</name>
+                            <priority>WARNING</priority>
+                        </trigger_prototype>
+                    </trigger_prototypes>
+                    <graph_prototypes>
+                        <graph_prototype>
+                            <name>Licence Usage {#FEATURE}</name>
+                            <ymin_type_1>FIXED</ymin_type_1>
+                            <graph_items>
+                                <graph_item>
+                                    <color>FF0000</color>
+                                    <item>
+                                        <host>FlexLM Licence Usage</host>
+                                        <key>flexlm.total[{#FEATURE}]</key>
+                                    </item>
+                                </graph_item>
+                                <graph_item>
+                                    <sortorder>1</sortorder>
+                                    <color>4000FF</color>
+                                    <item>
+                                        <host>FlexLM Licence Usage</host>
+                                        <key>flexlm.used[{#FEATURE}]</key>
+                                    </item>
+                                </graph_item>
+                            </graph_items>
+                        </graph_prototype>
+                    </graph_prototypes>
+                </discovery_rule>
+            </discovery_rules>
+            <screens>
+                <screen>
+                    <name>Graphs</name>
+                    <hsize>1</hsize>
+                    <vsize>1</vsize>
+                    <screen_items>
+                        <screen_item>
+                            <resourcetype>20</resourcetype>
+                            <style>0</style>
+                            <resource>
+                                <name>Licence Usage {#FEATURE}</name>
+                                <host>FlexLM Licence Usage</host>
+                            </resource>
+                            <width>500</width>
+                            <height>100</height>
+                            <x>0</x>
+                            <y>0</y>
+                            <colspan>1</colspan>
+                            <rowspan>1</rowspan>
+                            <elements>0</elements>
+                            <valign>0</valign>
+                            <halign>0</halign>
+                            <dynamic>0</dynamic>
+                            <sort_triggers>0</sort_triggers>
+                            <url/>
+                            <application/>
+                            <max_columns>2</max_columns>
+                        </screen_item>
+                    </screen_items>
+                </screen>
+            </screens>
+        </template>
+    </templates>
+</zabbix_export>
